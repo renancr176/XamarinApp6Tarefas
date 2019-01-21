@@ -43,13 +43,13 @@ namespace XamarinApp6Tarefas.Controller
 
                 if (DataTarefas.Any(df => df.Dia == dia))
                 {
-                    DataTarefas.Find(df => df.Dia == dia).Tarefas.Add(tarefa);
+                    DataTarefas.Find(df => df.Dia == dia).AddTarefa(tarefa);
                 }
                 else
                 {
-                    var listTarefas = new List<TarefaEntity>();
-                    listTarefas.Add(tarefa);
-                    DataTarefas.Add(new DataTarefaEntity(dia, listTarefas));
+                    var dataTarefa = new DataTarefaEntity(dia, new List<TarefaEntity>());
+                    dataTarefa.AddTarefa(tarefa);
+                    DataTarefas.Add(dataTarefa);
                 }
             }
             catch (Exception e)
@@ -61,13 +61,37 @@ namespace XamarinApp6Tarefas.Controller
             return true;
         }
 
-        public static bool Alterar(Guid idDataTarefa, Guid idTarefa, string titulo, PrioridadeEnum prioridade, TimeSpan? hora, string descricao, bool realizado)
+        public static bool Alterar(Guid idDataTarefa, DateTime dia, Guid idTarefa, string titulo, PrioridadeEnum prioridade, TimeSpan? hora, string descricao, bool realizado)
         {
             try
             {
                 var tarefa = TarefaEntity.TarefaFactory.NewTarefa(idTarefa, titulo, prioridade, hora, descricao, realizado);
-                var index = DataTarefas.Find(df => df.Id == idDataTarefa).Tarefas.IndexOf(DataTarefas.Find(df => df.Id == idDataTarefa).Tarefas.Find(t => t.Id == idTarefa));
-                DataTarefas.Find(df => df.Id == idDataTarefa).Tarefas[index] = tarefa;
+                if (DataTarefas.Any(df => df.Dia == dia && df.Id == idDataTarefa))
+                {
+                    var index = DataTarefas.Find(df => df.Id == idDataTarefa).Tarefas.IndexOf(DataTarefas.Find(df => df.Id == idDataTarefa).Tarefas.Find(t => t.Id == idTarefa));
+                    DataTarefas.Find(df => df.Id == idDataTarefa).Tarefas[index] = tarefa;
+                }
+                else
+                {
+                    if (DataTarefas.Any(df => df.Dia == dia))
+                    {
+                        DataTarefas.Find(df => df.Dia == dia).AddTarefa(tarefa);
+                    }
+                    else
+                    {
+                        var dataTarefa = new DataTarefaEntity(dia, new List<TarefaEntity>());
+                        dataTarefa.AddTarefa(tarefa);
+                        DataTarefas.Add(dataTarefa);
+                    }
+
+                    DataTarefas.Find(df => df.Id == idDataTarefa).RemoveTarefa(tarefa);
+
+                    if (!DataTarefas.Find(df => df.Id == idDataTarefa).Tarefas.Any())
+                    {
+                        DataTarefas.Remove(DataTarefas.Find(df => df.Id == idDataTarefa));
+                    }
+                }
+                
             }
             catch (Exception e)
             {

@@ -127,7 +127,7 @@ namespace XamarinApp6Tarefas.Pages
                     hora = HoraTarefa.Time;
                 }
 
-                if(TarefaController.Alterar(_dataTarefa.Id, _idTarefa.Value, TituloTarefa.Text, _prioridade, hora, DescricaoTarefa.Text, _dataTarefa.Tarefas.Find(t => t.Id == _idTarefa).Realizado))
+                if(TarefaController.Alterar(_dataTarefa.Id, DataTarefa.Date, _idTarefa.Value, TituloTarefa.Text, _prioridade, hora, DescricaoTarefa.Text, _dataTarefa.Tarefas.Find(t => t.Id == _idTarefa).Realizado))
                 {
                     DisplayAlert("Sucesso", "Tarefa alterada com sucesso.", "Ok");
                     RootPage.GoHome();

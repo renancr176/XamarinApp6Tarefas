@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -12,15 +13,32 @@ namespace XamarinApp6Tarefas.Pages
     {
         private List<DataTarefaEntity> _datasTarefas;
 
-		public Home ()
+        public Home()
+        {
+            InitializeComponent();
+
+            Init();
+        }
+
+		public Home (Guid? idDataTarefa)
 		{
 			InitializeComponent ();
 
+            Init();
+
+            if (idDataTarefa.HasValue)
+            {
+                SelectedItem = Children[_datasTarefas.IndexOf(_datasTarefas.Find(df => df.Id == idDataTarefa.Value))];
+            }
+        }
+
+        private void Init()
+        {
             _datasTarefas = TarefaController.DataTarefas.OrderBy(df => df.Dia).ToList();
 
             foreach (var dataTarefa in _datasTarefas)
             {
-                this.Children.Add(new DataTarefasPage(dataTarefa));
+                Children.Add(new DataTarefasPage(dataTarefa));
             }
         }
     }

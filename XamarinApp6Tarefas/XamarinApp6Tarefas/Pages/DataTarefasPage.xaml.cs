@@ -42,9 +42,9 @@ namespace XamarinApp6Tarefas.Pages
         {
             var btn = (ImageButton) sender;
             var tarefa = (TarefaEntity) btn.CommandParameter;
-            TarefaController.Alterar(_dataTarefa.Id, tarefa.Id, tarefa.Titulo, tarefa.Prioridade, tarefa.Hora,
+            TarefaController.Alterar(_dataTarefa.Id, _dataTarefa.Dia, tarefa.Id, tarefa.Titulo, tarefa.Prioridade, tarefa.Hora,
                 tarefa.Descricao, !tarefa.Realizado);
-            RootPage.GoHome();
+            RootPage.GoHome(_dataTarefa.Id);
         }
 
         internal class TarefaView

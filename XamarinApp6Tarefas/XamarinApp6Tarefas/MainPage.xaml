@@ -20,7 +20,7 @@
                 </StackLayout>
                 <ScrollView Orientation="Both">
                     <StackLayout>
-                        <Button Text="Tarefas Cadastrdas"
+                        <Button Text="Tarefas cadastradas"
                                 TextColor="White"
                                 BackgroundColor="Transparent"
                                 BorderColor="Transparent"

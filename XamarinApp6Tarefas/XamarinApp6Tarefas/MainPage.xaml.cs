@@ -15,7 +15,12 @@ namespace XamarinApp6Tarefas
 
         public void GoHome()
         {
-            Detail = new NavigationPage(new Home())
+            GoHome(null);
+        }
+
+        public void GoHome(Guid? idDataTarefa)
+        {
+            Detail = new NavigationPage(new Home(idDataTarefa))
             {
                 BarBackgroundColor = Color.FromHex("0D1F2D"),
                 BarTextColor = Color.White
