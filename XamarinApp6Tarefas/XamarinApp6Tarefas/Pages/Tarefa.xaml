@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XamarinApp6Tarefas.Pages.Tarefa"
+             Title="Tarefa">
+    <ContentPage.Content>
+        <ScrollView Padding="10">
+            <Grid x:Name="MainGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Label Text="*Dia:"
+                       TextColor="{StaticResource ThemeBlue}"
+                       HorizontalTextAlignment="End"
+                       VerticalOptions="CenterAndExpand"
+                       Grid.Row="0"
+                       Grid.Column="0"></Label>
+                <DatePicker x:Name="DataTarefa"
+                            HorizontalOptions="StartAndExpand"
+                            Grid.Row="0"
+                            Grid.Column="1"></DatePicker>
+
+                <Label Text="Definir Horário:"
+                       TextColor="{StaticResource ThemeBlue}"
+                       HorizontalTextAlignment="End"
+                       VerticalOptions="CenterAndExpand"
+                       Grid.Row="1"
+                       Grid.Column="0"></Label>
+                <Switch x:Name="SwHorario"
+                        IsToggled="False"
+                        Toggled="DefinirHorarioSw"
+                        Grid.Row="1"
+                        Grid.Column="1"></Switch>
+
+                <Label Text="*Hora:"
+                       TextColor="{StaticResource ThemeBlue}"
+                       HorizontalTextAlignment="End"
+                       VerticalOptions="CenterAndExpand"
+                       Grid.Row="2"
+                       Grid.Column="0"></Label>
+                <TimePicker x:Name="HoraTarefa"
+                            HorizontalOptions="StartAndExpand"
+                            Grid.Row="2"
+                            Grid.Column="1"></TimePicker>
+
+                <Label Text="*Título:"
+                       TextColor="{StaticResource ThemeBlue}"
+                       HorizontalTextAlignment="End"
+                       VerticalOptions="CenterAndExpand"
+                       Grid.Row="3"
+                       Grid.Column="0"></Label>
+                <Entry x:Name="TituloTarefa"
+                       HorizontalOptions="FillAndExpand"
+                       Grid.Row="3"
+                       Grid.Column="1"></Entry>
+
+                <Label Text="*Prioridade:"
+                       TextColor="{StaticResource ThemeBlue}"
+                       HorizontalTextAlignment="End"
+                       VerticalOptions="CenterAndExpand"
+                       Grid.Row="4"
+                       Grid.Column="0"></Label>
+                <ListView x:Name="ListaPrioridades"
+                          HasUnevenRows="True"
+                          ItemSelected="ListaPrioridadesItemSelected"
+                          HorizontalOptions="FillAndExpand"
+                          VerticalOptions="Fill"
+                          Grid.Row="4"
+                          HeightRequest="120"
+                          Grid.Column="1">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Orientation="Horizontal">
+                                    <BoxView BackgroundColor="{Binding Cor}"
+                                             CornerRadius="5"
+                                             WidthRequest="10"
+                                             HeightRequest="10"
+                                             Margin="10,10,10,10"></BoxView>
+                                    <Label Text="{Binding Descricao}"
+                                           TextColor="{StaticResource ThemeBlue}"
+                                           HorizontalOptions="FillAndExpand"
+                                           VerticalOptions="CenterAndExpand"></Label>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <Label Text="Descrição:"
+                       TextColor="{StaticResource ThemeBlue}"
+                       HorizontalTextAlignment="End"
+                       VerticalOptions="CenterAndExpand"
+                       Grid.Row="5"
+                       Grid.Column="0"></Label>
+                <Editor x:Name="DescricaoTarefa"
+                        HorizontalOptions="FillAndExpand"
+                        HeightRequest="200"
+                        Grid.Row="5"
+                        Grid.Column="1"></Editor>
+
+                <StackLayout Orientation="Horizontal"
+                             Grid.Row="6"
+                             Grid.Column="0"
+                             Grid.ColumnSpan="2"
+                             HorizontalOptions="CenterAndExpand">
+
+                    <Button Text="Cancelar"
+                            Clicked="BtnCancelarClicked"
+                            Style="{StaticResource BtnInfo}"></Button>
+
+                    <Button x:Name="BtnCadastrar"
+                            Text="Cadastrar"
+                            Clicked="BtnCadastrarClicked"
+                            Style="{StaticResource BtnSuccess}"></Button>
+
+                    <Button x:Name="BtnAlterar"
+                            Text="Alterar"
+                            Clicked="BtnAlterarClicked"
+                            Style="{StaticResource BtnWarning}"></Button>
+                </StackLayout>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

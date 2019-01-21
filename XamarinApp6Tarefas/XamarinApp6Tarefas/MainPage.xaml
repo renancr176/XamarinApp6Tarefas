@@ -1,14 +1,46 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:XamarinApp6Tarefas"
+             xmlns:pages="clr-namespace:XamarinApp6Tarefas.Pages"
              x:Class="XamarinApp6Tarefas.MainPage">
 
-    <StackLayout>
-        <!-- Place new controls here -->
-        <Label Text="Welcome to Xamarin.Forms!" 
-           HorizontalOptions="Center"
-           VerticalOptions="CenterAndExpand" />
-    </StackLayout>
+    <MasterDetailPage.Master>
+        <ContentPage Title="Menu" 
+                     BackgroundColor="#0D1F2D">
+            <StackLayout>
+                <StackLayout BackgroundColor="{StaticResource ThemeYellow}"
+                             Padding="5,10,5,10"
+                             Margin="0,0,0,10">
+                    <Label Text="Tarefas"
+                           TextColor="{StaticResource ThemeBlue}"
+                           FontSize="Large"
+                           HorizontalTextAlignment="Center"
+                           HorizontalOptions="CenterAndExpand"
+                           VerticalOptions="FillAndExpand"></Label>
+                </StackLayout>
+                <ScrollView Orientation="Both">
+                    <StackLayout>
+                        <Button Text="Tarefas Cadastrdas"
+                                TextColor="White"
+                                BackgroundColor="Transparent"
+                                BorderColor="Transparent"
+                                Clicked="GoToHome"></Button>
+                        <Button Text="Nova tarefa"
+                                TextColor="White"
+                                BackgroundColor="Transparent"
+                                BorderColor="Transparent"
+                                Clicked="NovaTarefa"></Button>
+                    </StackLayout>
+                </ScrollView>
+            </StackLayout>
+        </ContentPage>
+    </MasterDetailPage.Master>
+    <MasterDetailPage.Detail>
+        <NavigationPage>
+            <x:Arguments>
+                <pages:Home></pages:Home>
+            </x:Arguments>
+        </NavigationPage>
+    </MasterDetailPage.Detail>
 
-</ContentPage>
+</MasterDetailPage>

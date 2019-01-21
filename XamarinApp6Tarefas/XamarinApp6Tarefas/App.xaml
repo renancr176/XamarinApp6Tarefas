@@ -3,6 +3,62 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="XamarinApp6Tarefas.App">
     <Application.Resources>
-
+        <Color x:Key="ThemeBlue">#0D1F2D</Color>
+        <Color x:Key="ThemeYellow">#FFC926</Color>
+        <Style TargetType="Button" x:Key="BtnPrimary">
+            <Setter Property="BackgroundColor" Value="#007bff"></Setter>
+            <Setter Property="TextColor" Value="White"></Setter>
+            <Setter Property="CornerRadius" Value="5"></Setter>
+        </Style>
+        <Style TargetType="Button" x:Key="BtnSuccess">
+            <Setter Property="BackgroundColor" Value="#28a745"></Setter>
+            <Setter Property="TextColor" Value="White"></Setter>
+            <Setter Property="CornerRadius" Value="5"></Setter>
+        </Style>
+        <Style TargetType="Button" x:Key="BtnDanger">
+            <Setter Property="BackgroundColor" Value="#dc3545"></Setter>
+            <Setter Property="TextColor" Value="White"></Setter>
+            <Setter Property="CornerRadius" Value="5"></Setter>
+        </Style>
+        <Style TargetType="Button" x:Key="BtnWarning">
+            <Setter Property="BackgroundColor" Value="#ffc107"></Setter>
+            <Setter Property="TextColor" Value="#212529"></Setter>
+            <Setter Property="CornerRadius" Value="5"></Setter>
+        </Style>
+        <Style TargetType="Button" x:Key="BtnInfo">
+            <Setter Property="BackgroundColor" Value="#17a2b8"></Setter>
+            <Setter Property="TextColor" Value="White"></Setter>
+            <Setter Property="CornerRadius" Value="5"></Setter>
+        </Style>
+        <Style TargetType="Image" x:Key="CheckBoxOn">
+            <Setter Property="Source" Value="check_on.png"></Setter>
+            <Setter Property="VerticalOptions" Value="CenterAndExpand"></Setter>
+            <Setter Property="HorizontalOptions" Value="Fill"></Setter>
+            <Setter Property="HeightRequest" Value="20"></Setter>
+            <Setter Property="WidthRequest" Value="20"></Setter>
+            <Setter Property="Aspect" Value="AspectFit"></Setter>
+        </Style>
+        <Style TargetType="Image" x:Key="CheckBoxOff">
+            <Setter Property="Source" Value="check_off.png"></Setter>
+            <Setter Property="VerticalOptions" Value="CenterAndExpand"></Setter>
+            <Setter Property="HorizontalOptions" Value="Fill"></Setter>
+            <Setter Property="HeightRequest" Value="20"></Setter>
+            <Setter Property="WidthRequest" Value="20"></Setter>
+            <Setter Property="Aspect" Value="AspectFit"></Setter>
+        </Style>
+        <Style TargetType="ImageButton" x:Key="BtnEditIcon">
+            <Setter Property="Source" Value="edit.png"></Setter>
+            <Setter Property="HeightRequest" Value="20"></Setter>
+            <Setter Property="WidthRequest" Value="20"></Setter>
+            <Setter Property="Aspect" Value="AspectFit"></Setter>
+            <Setter Property="BackgroundColor" Value="#ffc107"></Setter>
+            <Setter Property="CornerRadius" Value="5"></Setter>
+        </Style>
+        <Style TargetType="ImageButton" x:Key="BtnDescricaoIcon">
+            <Setter Property="Source" Value="chat.png"></Setter>
+            <Setter Property="HeightRequest" Value="20"></Setter>
+            <Setter Property="WidthRequest" Value="20"></Setter>
+            <Setter Property="Aspect" Value="AspectFit"></Setter>
+        </Style>
     </Application.Resources>
 </Application>

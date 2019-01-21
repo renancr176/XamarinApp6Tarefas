@@ -157,4 +157,16 @@
       <Name>XamarinApp6Tarefas</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\check_off.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\check_on.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\chat.png" />
+  </ItemGroup>
 </Project>
