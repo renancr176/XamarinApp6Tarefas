@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using XamarinApp6Tarefas.Enums;
 
 namespace XamarinApp6Tarefas.Models.Tarefas

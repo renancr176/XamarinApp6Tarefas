@@ -20,7 +20,7 @@ namespace XamarinApp6Tarefas.Pages
 
             _dataTarefa = dataTarefa;
             Title = _dataTarefa.Dia.ToString("dd/MM/yy");
-            ListaTarefas.ItemsSource = dataTarefa.Tarefas.OrderBy(t => t.Realizado).ThenBy(t => t.Prioridade).ThenBy(t => t.Hora)
+            ListaTarefas.ItemsSource = dataTarefa.Tarefas.OrderBy(t => t.Realizado).ThenBy(t => t.Hora).ThenBy(t => t.Prioridade)
                 .Select(t => new TarefaView(t.Id, t.Titulo, t.Prioridade, t.Hora, t.Descricao, t.Realizado));
         }
 
@@ -35,7 +35,7 @@ namespace XamarinApp6Tarefas.Pages
         {
             var btn = (ImageButton) sender;
             var tarefa = (TarefaEntity) btn.CommandParameter;
-            DisplayAlert("Descrição", tarefa.Descricao, "Ok");
+            DisplayAlert("Descrição", tarefa.Descricao ?? "Não há descrição cadastrada", "Ok");
         }
 
         private void BtnCheckTarefaClicked(object sender, EventArgs e)

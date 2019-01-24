@@ -3,14 +3,14 @@ using System.Drawing;
 
 namespace XamarinApp6Tarefas.Enums
 {
-    public abstract class PrioridadeEnum : Enumeration
+    public class PrioridadeEnum : Enumeration
     {
         public static PrioridadeEnum UrgenteImportante = new UrgenteImportanteVal();
         public static PrioridadeEnum UrgenteNaoImportante = new UrgenteNaoImportanteVal();
         public static PrioridadeEnum NaoUrgenteImportante = new NaoUrgenteImportanteVal();
         public static PrioridadeEnum NaoUrgenteNaoImportante = new NaoUrgenteNaoImportanteVal();
 
-        protected PrioridadeEnum(int id, string descricao, Color cor)
+        public PrioridadeEnum(int id, string descricao, Color cor)
             : base(id, descricao, cor)
         {
         }

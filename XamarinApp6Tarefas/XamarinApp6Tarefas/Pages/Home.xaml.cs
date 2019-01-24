@@ -30,6 +30,13 @@ namespace XamarinApp6Tarefas.Pages
             {
                 SelectedItem = Children[_datasTarefas.IndexOf(_datasTarefas.Find(df => df.Id == idDataTarefa.Value))];
             }
+            else if(_datasTarefas.Count > 0)
+            {
+                idDataTarefa = _datasTarefas.Select(df => new {df.Id, (df.Dia - DateTime.Today).TotalDays })
+                    .OrderBy(x => Math.Abs((long) x.TotalDays - 0)).First().Id;
+
+                SelectedItem = Children[_datasTarefas.IndexOf(_datasTarefas.Find(df => df.Id == idDataTarefa.Value))];
+            }
         }
 
         private void Init()

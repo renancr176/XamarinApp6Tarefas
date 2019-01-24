@@ -59,6 +59,7 @@
             <Setter Property="HeightRequest" Value="20"></Setter>
             <Setter Property="WidthRequest" Value="20"></Setter>
             <Setter Property="Aspect" Value="AspectFit"></Setter>
+            <Setter Property="HorizontalOptions" Value="Fill"></Setter>
         </Style>
     </Application.Resources>
 </Application>

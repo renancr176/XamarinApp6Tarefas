@@ -20,6 +20,8 @@ namespace XamarinApp6Tarefas.Controller
                 var tarefasJson = (String) App.Current.Properties["Tarefas"];
 
                 DataTarefas = JsonConvert.DeserializeObject<List<DataTarefaEntity>>(tarefasJson);
+
+                DataTarefas.RemoveAll(df => (df.Dia - DateTime.Today).TotalDays < -7);
             }
         }
 

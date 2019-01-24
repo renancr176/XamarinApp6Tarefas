@@ -3,42 +3,43 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="XamarinApp6Tarefas.Pages.DataTarefasPage">
     <ContentPage.Content>
-        <ListView x:Name="ListaTarefas"
-                  HasUnevenRows="True"
-                  >
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <StackLayout Orientation="Horizontal">
-                            <ImageButton Style="{Binding CheckButtonStyle}"
-                                         Clicked="BtnCheckTarefaClicked"
-                                         CommandParameter="{Binding .}"></ImageButton>
-                            <BoxView BackgroundColor="{Binding Prioridade.Cor}"
-                                     HorizontalOptions="Fill"
-                                     VerticalOptions="CenterAndExpand"
-                                     WidthRequest="10"
-                                     HeightRequest="10"
-                                     Margin="10,10,10,10"></BoxView>
-                            <Label Text="{Binding StrHorario}"
-                                   TextColor="{StaticResource ThemeBlue}"
-                                   HorizontalOptions="FillAndExpand"
-                                   VerticalOptions="CenterAndExpand"></Label>
-                            <Label Text="{Binding Titulo}"
-                                   TextColor="{StaticResource ThemeBlue}"
-                                   HorizontalOptions="FillAndExpand"
-                                   VerticalOptions="CenterAndExpand"></Label>
-                            <ImageButton Style="{StaticResource BtnDescricaoIcon}"
-                                         Clicked="BtnDescricaoClicked"
-                                         CommandParameter="{Binding .}"></ImageButton>
-                            <ImageButton Style="{StaticResource BtnEditIcon}"
+        <StackLayout Padding="10">
+            <ListView x:Name="ListaTarefas"
+                      HasUnevenRows="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal">
+                                <ImageButton Style="{Binding CheckButtonStyle}"
+                                             Clicked="BtnCheckTarefaClicked"
+                                             CommandParameter="{Binding .}"></ImageButton>
+                                <BoxView BackgroundColor="{Binding Prioridade.Cor}"
                                          HorizontalOptions="Fill"
                                          VerticalOptions="CenterAndExpand"
-                                         Clicked="BtnAlterarTarefaClicked"
-                                         CommandParameter="{Binding .}"></ImageButton>
-                        </StackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                                         WidthRequest="10"
+                                         HeightRequest="10"
+                                         Margin="10,10,10,10"></BoxView>
+                                <Label Text="{Binding StrHorario}"
+                                       TextColor="{StaticResource ThemeBlue}"
+                                       HorizontalOptions="Fill"
+                                       VerticalOptions="CenterAndExpand"></Label>
+                                <ImageButton Style="{StaticResource BtnDescricaoIcon}"
+                                             Clicked="BtnDescricaoClicked"
+                                             CommandParameter="{Binding .}"></ImageButton>
+                                <Label Text="{Binding Titulo}"
+                                       TextColor="{StaticResource ThemeBlue}"
+                                       HorizontalOptions="FillAndExpand"
+                                       VerticalOptions="CenterAndExpand"></Label>
+                                <ImageButton Style="{StaticResource BtnEditIcon}"
+                                             HorizontalOptions="Fill"
+                                             VerticalOptions="CenterAndExpand"
+                                             Clicked="BtnAlterarTarefaClicked"
+                                             CommandParameter="{Binding .}"></ImageButton>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>
