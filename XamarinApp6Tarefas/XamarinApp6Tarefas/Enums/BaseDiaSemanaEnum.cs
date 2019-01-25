@@ -1,30 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Reflection;
 
 namespace XamarinApp6Tarefas.Enums
 {
-    public abstract class Enumeration : IComparable
+    public abstract class BaseDiaSemanaEnum : IComparable
     {
-        public int Id { get; private set; }
+        public DayOfWeek Id { get; private set; }
         public string Descricao { get; private set; }
-        public Color Cor { get; private set; }
+        public string Sigla { get; private set; }
+        public bool Ativo { get; set; }
 
-        protected Enumeration()
+        protected BaseDiaSemanaEnum()
         { }
 
-        protected Enumeration(int id, string descricao, Color cor)
+        protected BaseDiaSemanaEnum(DayOfWeek id, string descricao, string sigla)
         {
             Id = id;
             Descricao = descricao;
-            Cor = cor;
+            Sigla = sigla;
+            Ativo = true;
         }
 
         public override string ToString() => Descricao;
 
-        public static IEnumerable<T> GetAll<T>() where T : Enumeration
+        public static IEnumerable<T> GetAll<T>() where T : BaseDiaSemanaEnum
         {
             var fields = typeof(T).GetFields(BindingFlags.Public |
                                              BindingFlags.Static |
@@ -35,7 +36,7 @@ namespace XamarinApp6Tarefas.Enums
 
         public override bool Equals(object obj)
         {
-            var otherValue = obj as Enumeration;
+            var otherValue = obj as BaseDiaSemanaEnum;
 
             if (otherValue == null)
                 return false;
@@ -46,6 +47,6 @@ namespace XamarinApp6Tarefas.Enums
             return typeMatches && valueMatches;
         }
 
-        public int CompareTo(object other) => Id.CompareTo(((Enumeration)other).Id);
+        public int CompareTo(object other) => Id.CompareTo(((BaseDiaSemanaEnum)other).Id);
     }
 }

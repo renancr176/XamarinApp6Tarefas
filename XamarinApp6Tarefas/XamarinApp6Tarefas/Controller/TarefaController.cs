@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using Plugin.LocalNotifications;
 using XamarinApp6Tarefas.Enums;
 using XamarinApp6Tarefas.Models.Tarefas;
 
@@ -10,6 +11,7 @@ namespace XamarinApp6Tarefas.Controller
     public static class TarefaController
     {
         public static List<DataTarefaEntity> DataTarefas { get; set; }
+        private static int LastIdNotification { get; set; }
 
         static TarefaController()
         {
@@ -22,6 +24,17 @@ namespace XamarinApp6Tarefas.Controller
                 DataTarefas = JsonConvert.DeserializeObject<List<DataTarefaEntity>>(tarefasJson);
 
                 DataTarefas.RemoveAll(df => (df.Dia - DateTime.Today).TotalDays < -7);
+            }
+
+            if (App.Current.Properties.ContainsKey("TarefasIdNotification"))
+            {
+                var strJson = (String)App.Current.Properties["TarefasIdNotification"];
+
+                LastIdNotification = JsonConvert.DeserializeObject<int>(strJson);
+            }
+            else
+            {
+                LastIdNotification = 0;
             }
         }
 
@@ -37,12 +50,12 @@ namespace XamarinApp6Tarefas.Controller
             App.Current.Properties.Add("Tarefas", tarefasJson);
         }
 
-        public static bool Cadastrar(DateTime dia, string titulo, PrioridadeEnum prioridade, TimeSpan? hora, string descricao)
+        public static bool Cadastrar(DateTime dia, string titulo, PrioridadeEnum prioridade, TimeSpan hora, string descricao)
         {
             try
             {
-                var tarefa = new TarefaEntity(titulo, prioridade, hora, descricao, false);
-
+                var tarefa = new TarefaEntity(titulo, prioridade, hora, descricao, false, NextIdNotification());
+                
                 if (DataTarefas.Any(df => df.Dia == dia))
                 {
                     DataTarefas.Find(df => df.Dia == dia).AddTarefa(tarefa);
@@ -53,6 +66,8 @@ namespace XamarinApp6Tarefas.Controller
                     dataTarefa.AddTarefa(tarefa);
                     DataTarefas.Add(dataTarefa);
                 }
+
+                CrossLocalNotifications.Current.Show(titulo, descricao, tarefa.IdNotificacao, DataTarefas.Find(df => df.Dia == dia).NotificacaoBaseDateTime(tarefa.Id).AddMinutes(-10));
             }
             catch (Exception e)
             {
@@ -63,7 +78,7 @@ namespace XamarinApp6Tarefas.Controller
             return true;
         }
 
-        public static bool Alterar(Guid idDataTarefa, DateTime dia, Guid idTarefa, string titulo, PrioridadeEnum prioridade, TimeSpan? hora, string descricao, bool realizado)
+        public static bool Alterar(Guid idDataTarefa, DateTime dia, Guid idTarefa, string titulo, PrioridadeEnum prioridade, TimeSpan hora, string descricao, bool realizado)
         {
             try
             {
@@ -93,7 +108,9 @@ namespace XamarinApp6Tarefas.Controller
                         DataTarefas.Remove(DataTarefas.Find(df => df.Id == idDataTarefa));
                     }
                 }
-                
+
+                CrossLocalNotifications.Current.Cancel(tarefa.IdNotificacao);
+                CrossLocalNotifications.Current.Show(titulo, descricao, tarefa.IdNotificacao, DataTarefas.Find(df => df.Dia == dia).NotificacaoBaseDateTime(tarefa.Id).AddMinutes(-10));
             }
             catch (Exception e)
             {
@@ -109,6 +126,9 @@ namespace XamarinApp6Tarefas.Controller
             try
             {
                 var idDataTarefa = DataTarefas.Find(df => df.Tarefas.Any(t => t.Id == idTarefa)).Id;
+
+                CrossLocalNotifications.Current.Cancel(DataTarefas.Find(df => df.Id == idDataTarefa).Tarefas.Find(t => t.Id == idTarefa).IdNotificacao);
+
                 DataTarefas.Find(df => df.Id == idDataTarefa).Tarefas.Remove(DataTarefas.Find(df => df.Id == idDataTarefa)
                     .Tarefas.Find(t => t.Id == idTarefa));
                 if (!DataTarefas.Find(df => df.Id == idDataTarefa).Tarefas.Any())
@@ -123,6 +143,13 @@ namespace XamarinApp6Tarefas.Controller
 
             SaveChanges();
             return true;
+        }
+
+
+        private static int NextIdNotification()
+        {
+            LastIdNotification++;
+            return LastIdNotification;
         }
     }
 }

@@ -14,8 +14,9 @@ namespace XamarinApp6Tarefas.Pages
 	{
 	    private DataTarefaEntity _dataTarefa;
 	    private Guid? _idTarefa;
+        private List<DiaSemanaEnum> _diasSemana;
         private PrioridadeEnum _prioridade;
-        private bool _definirHorario;
+        private bool _definirDiaFinal;
 
         MainPage RootPage { get => Application.Current.MainPage as MainPage; }
 
@@ -27,12 +28,15 @@ namespace XamarinApp6Tarefas.Pages
             Title = "Nova Tarefa";
 
             var prioridades = PrioridadeEnum.GetAll<PrioridadeEnum>().ToList();
+            _diasSemana = DiaSemanaEnum.GetAll<DiaSemanaEnum>().ToList();
 
             ListaPrioridades.ItemsSource = prioridades;
-
-            _definirHorario = false;
+            _definirDiaFinal = false;
             DataTarefa.MinimumDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            DataFinalTarefa.Date = (DataTarefa.Date).AddDays(1);
+            DataFinalTarefa.MinimumDate = (DataTarefa.Date).AddDays(1);
             BtnAlterar.IsVisible = false;
+            ControleListaDiaSemanaSwitch(DataTarefa.Date, DataFinalTarefa.Date);
 
             if (_idTarefa.HasValue 
             && TarefaController.DataTarefas.Any(dt => dt.Tarefas.Any(t => t.Id == _idTarefa)))
@@ -41,11 +45,7 @@ namespace XamarinApp6Tarefas.Pages
                 Title = "Alterar Tarefa";
                 DataTarefa.Date = _dataTarefa.Dia;
                 DataTarefa.MinimumDate = _dataTarefa.Dia;
-                SwHorario.IsToggled = _dataTarefa.Tarefas.Find(tf => tf.Id == _idTarefa).Hora.HasValue;
-                if(_dataTarefa.Tarefas.Find(tf => tf.Id == _idTarefa).Hora.HasValue)
-                { 
-                    HoraTarefa.Time = _dataTarefa.Tarefas.Find(tf => tf.Id == _idTarefa).Hora.Value;
-                }
+                HoraTarefa.Time = _dataTarefa.Tarefas.Find(tf => tf.Id == _idTarefa).Hora;
                 TituloTarefa.Text = _dataTarefa.Tarefas.Find(tf => tf.Id == _idTarefa).Titulo;
                 ListaPrioridades.SelectedItem = _dataTarefa.Tarefas.Find(tf => tf.Id == _idTarefa).Prioridade;
                 _prioridade = _dataTarefa.Tarefas.Find(tf => tf.Id == _idTarefa).Prioridade;
@@ -54,7 +54,26 @@ namespace XamarinApp6Tarefas.Pages
                 BtnAlterar.IsVisible = true;
             }
 
-            DefinirHorario();
+
+            ControleDefinirDiaFinal();
+        }
+
+        private void DataTarefaSelected(object sender, DateChangedEventArgs args)
+        {
+            if (DataFinalTarefa.Date <= args.NewDate)
+            {
+                DataFinalTarefa.Date = (args.NewDate).AddDays(1);
+            }
+            DataFinalTarefa.MinimumDate = (args.NewDate).AddDays(1);
+
+            ControleListaDiaSemanaSwitch(args.NewDate, DataFinalTarefa.Date);
+        }
+
+        private void DiaSemanaTogled(object sender, ToggledEventArgs args)
+        {
+            var sw = (Switch) sender;
+            var diaSemana = (DiaSemanaEnum)sw.BindingContext;
+            _diasSemana.Find(ds => ds.Id == diaSemana.Id).Ativo = args.Value;
         }
 
         private void ListaPrioridadesItemSelected(object sender, SelectedItemChangedEventArgs args)
@@ -62,25 +81,15 @@ namespace XamarinApp6Tarefas.Pages
             _prioridade = (PrioridadeEnum) args.SelectedItem;
         }
 
-        private void DefinirHorarioSw(object sender, ToggledEventArgs args)
+        private void DefiniDataFinal(object sender, ToggledEventArgs args)
         {
-            _definirHorario = args.Value;
-            DefinirHorario();
+            _definirDiaFinal = args.Value;
+            ControleDefinirDiaFinal();
         }
 
-        private void DefinirHorario()
+        private void DataTarefaFinalSelected(object sender, DateChangedEventArgs args)
         {
-            switch (_definirHorario)
-            {
-                case true:
-                    MainGrid.Children[4].IsVisible = true;
-                    MainGrid.Children[5].IsVisible = true;
-                break;
-                default:
-                    MainGrid.Children[4].IsVisible = false;
-                    MainGrid.Children[5].IsVisible = false;
-                break;
-            }
+            ControleListaDiaSemanaSwitch(DataTarefa.Date, args.NewDate);
         }
 
         private void BtnCadastrarClicked(object sender, EventArgs e)
@@ -89,12 +98,7 @@ namespace XamarinApp6Tarefas.Pages
             {
                 TimeSpan? hora = null;
 
-                if (_definirHorario)
-                {
-                    hora = HoraTarefa.Time;
-                }
-
-                if (TarefaController.Cadastrar(DataTarefa.Date, TituloTarefa.Text, _prioridade, hora,
+                if (TarefaController.Cadastrar(DataTarefa.Date, TituloTarefa.Text, _prioridade, HoraTarefa.Time,
                     DescricaoTarefa.Text))
                 {
                     DisplayAlert("Sucesso", "Tarefa cadastrada com sucesso.", "Ok");
@@ -122,12 +126,7 @@ namespace XamarinApp6Tarefas.Pages
             {
                 TimeSpan? hora = null;
 
-                if (_definirHorario)
-                {
-                    hora = HoraTarefa.Time;
-                }
-
-                if(TarefaController.Alterar(_dataTarefa.Id, DataTarefa.Date, _idTarefa.Value, TituloTarefa.Text, _prioridade, hora, DescricaoTarefa.Text, _dataTarefa.Tarefas.Find(t => t.Id == _idTarefa).Realizado))
+                if(TarefaController.Alterar(_dataTarefa.Id, DataTarefa.Date, _idTarefa.Value, TituloTarefa.Text, _prioridade, HoraTarefa.Time, DescricaoTarefa.Text, _dataTarefa.Tarefas.Find(t => t.Id == _idTarefa).Realizado))
                 {
                     DisplayAlert("Sucesso", "Tarefa alterada com sucesso.", "Ok");
                     RootPage.GoHome();
@@ -142,6 +141,45 @@ namespace XamarinApp6Tarefas.Pages
                 DisplayAlert("Erro", "Informe todos os campos obrigatórios", "Ok");
             }
         }
+
+        #region Controls
+
+        private void ControleDefinirDiaFinal()
+        {
+            MainGrid.Children[4].IsVisible = _definirDiaFinal;
+            MainGrid.Children[5].IsVisible = _definirDiaFinal;
+            MainGrid.Children[6].IsVisible = _definirDiaFinal;
+            MainGrid.Children[7].IsVisible = _definirDiaFinal;
+        }
+
+        private void ControleListaDiaSemanaSwitch(DateTime dataInicial, DateTime? dataFinal)
+        {
+            if (dataFinal.HasValue)
+            {
+                var diasSemanaToAtivo = Enumerable.Range(0, 1 + dataFinal.Value.Subtract(dataInicial).Days)
+                    .Select(offset => dataInicial.AddDays(offset))
+                    .ToList()
+                    .Select(d => d.DayOfWeek)
+                    .Distinct()
+                    .ToList();
+
+                foreach (var diaSemanaEnum in _diasSemana.FindAll(ds => diasSemanaToAtivo.Contains(ds.Id)))
+                {
+                    diaSemanaEnum.Ativo = true;
+                }
+            }
+            else
+            {
+                foreach (var diaSemanaEnum in _diasSemana.FindAll(ds => ds.Id != dataInicial.DayOfWeek))
+                {
+                    diaSemanaEnum.Ativo = false;
+                }
+            }
+
+            ListaDiaSemana.ItemsSource = _diasSemana;
+        }
+
+        #endregion
 
         #region Validations
 
@@ -171,8 +209,7 @@ namespace XamarinApp6Tarefas.Pages
 
         private bool HoraValida()
         {
-            if (!_definirHorario
-            || (_definirHorario && HoraTarefa.Time != null))
+            if (HoraTarefa.Time != null)
             {
                 return true;
             }

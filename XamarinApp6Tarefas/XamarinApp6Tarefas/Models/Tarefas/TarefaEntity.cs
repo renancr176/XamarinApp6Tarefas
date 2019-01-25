@@ -9,15 +9,16 @@ namespace XamarinApp6Tarefas.Models.Tarefas
     {
         public string Titulo { get; protected set; }
         public PrioridadeEnum Prioridade { get; protected set; }
-        public TimeSpan? Hora { get; protected set; }
+        public TimeSpan Hora { get; protected set; }
         public string Descricao { get; protected set; }
         public bool Realizado { get; protected set; }
+        public int IdNotificacao { get; protected set; }
 
         protected TarefaEntity()
         {
         }
 
-        public TarefaEntity(string titulo, PrioridadeEnum prioridade, TimeSpan? hora, string descricao, bool realizado)
+        public TarefaEntity(string titulo, PrioridadeEnum prioridade, TimeSpan hora, string descricao, bool realizado, int idNotificacao)
         {
             Id = Guid.NewGuid();
             Titulo = titulo;
@@ -25,6 +26,7 @@ namespace XamarinApp6Tarefas.Models.Tarefas
             Hora = hora;
             Descricao = descricao;
             Realizado = realizado;
+            IdNotificacao = idNotificacao;
         }
 
         public override bool IsValid()
@@ -39,7 +41,7 @@ namespace XamarinApp6Tarefas.Models.Tarefas
 
         public static class TarefaFactory
         {
-            public static TarefaEntity NewTarefa(Guid id, string titulo, PrioridadeEnum prioridade, TimeSpan? hora, string descricao, bool realizado)
+            public static TarefaEntity NewTarefa(Guid id, string titulo, PrioridadeEnum prioridade, TimeSpan hora, string descricao, bool realizado)
             {
                 var tarefa = new TarefaEntity()
                 {

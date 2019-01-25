@@ -14,6 +14,8 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -21,73 +23,115 @@
                 </Grid.ColumnDefinitions>
 
                 <Label Text="*Dia:"
+                       x:Name="LblDiaInicial"
                        TextColor="{StaticResource ThemeBlue}"
                        HorizontalTextAlignment="End"
                        VerticalOptions="CenterAndExpand"
                        Grid.Row="0"
                        Grid.Column="0"></Label>
                 <DatePicker x:Name="DataTarefa"
+                            DateSelected="DataTarefaSelected"
                             HorizontalOptions="StartAndExpand"
                             Grid.Row="0"
                             Grid.Column="1"></DatePicker>
 
-                <Label Text="Definir Horário:"
+                <Label Text="Definir data final:"
                        TextColor="{StaticResource ThemeBlue}"
                        HorizontalTextAlignment="End"
                        VerticalOptions="CenterAndExpand"
                        Grid.Row="1"
                        Grid.Column="0"></Label>
-                <Switch x:Name="SwHorario"
-                        IsToggled="False"
-                        Toggled="DefinirHorarioSw"
+                <Switch IsToggled="False"
+                        Toggled="DefiniDataFinal"
                         Grid.Row="1"
                         Grid.Column="1"></Switch>
 
-                <Label Text="*Hora:"
+                <Label Text="*Dia Final:"
                        TextColor="{StaticResource ThemeBlue}"
                        HorizontalTextAlignment="End"
                        VerticalOptions="CenterAndExpand"
                        Grid.Row="2"
                        Grid.Column="0"></Label>
-                <TimePicker x:Name="HoraTarefa"
+                <DatePicker x:Name="DataFinalTarefa"
+                            DateSelected="DataTarefaFinalSelected"
                             HorizontalOptions="StartAndExpand"
                             Grid.Row="2"
+                            Grid.Column="1"></DatePicker>
+
+                <Label Text="*Dia da semana:"
+                       TextColor="{StaticResource ThemeBlue}"
+                       HorizontalTextAlignment="End"
+                       VerticalOptions="CenterAndExpand"
+                       Grid.Row="3"
+                       Grid.Column="0"></Label>
+                <ListView x:Name="ListaDiaSemana"
+                          HasUnevenRows="True"
+                          HorizontalOptions="FillAndExpand"
+                          VerticalOptions="Fill"
+                          Grid.Row="3"
+                          Grid.Column="1"
+                          HeightRequest="280">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding Descricao}"
+                                           TextColor="{StaticResource ThemeBlue}"
+                                           HorizontalOptions="FillAndExpand"
+                                           VerticalOptions="CenterAndExpand"
+                                           HorizontalTextAlignment="End"></Label>
+                                    <Switch IsToggled="True" 
+                                            IsEnabled="{Binding Ativo}"
+                                            BindingContext="{Binding .}"
+                                            Toggled="DiaSemanaTogled"></Switch>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <Label Text="*Hora:"
+                       TextColor="{StaticResource ThemeBlue}"
+                       HorizontalTextAlignment="End"
+                       VerticalOptions="CenterAndExpand"
+                       Grid.Row="4"
+                       Grid.Column="0"></Label>
+                <TimePicker x:Name="HoraTarefa"
+                            HorizontalOptions="StartAndExpand"
+                            Grid.Row="4"
                             Grid.Column="1"></TimePicker>
 
                 <Label Text="*Título:"
                        TextColor="{StaticResource ThemeBlue}"
                        HorizontalTextAlignment="End"
                        VerticalOptions="CenterAndExpand"
-                       Grid.Row="3"
+                       Grid.Row="5"
                        Grid.Column="0"></Label>
                 <Entry x:Name="TituloTarefa"
                        HorizontalOptions="FillAndExpand"
-                       Grid.Row="3"
+                       Grid.Row="5"
                        Grid.Column="1"></Entry>
 
                 <Label Text="*Prioridade:"
                        TextColor="{StaticResource ThemeBlue}"
                        HorizontalTextAlignment="End"
                        VerticalOptions="CenterAndExpand"
-                       Grid.Row="4"
+                       Grid.Row="6"
                        Grid.Column="0"></Label>
                 <ListView x:Name="ListaPrioridades"
                           HasUnevenRows="True"
                           ItemSelected="ListaPrioridadesItemSelected"
                           HorizontalOptions="FillAndExpand"
                           VerticalOptions="Fill"
-                          Grid.Row="4"
-                          HeightRequest="120"
-                          Grid.Column="1">
+                          Grid.Row="6"
+                          Grid.Column="1"
+                          HeightRequest="120">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
                                 <StackLayout Orientation="Horizontal">
                                     <BoxView BackgroundColor="{Binding Cor}"
-                                             CornerRadius="5"
-                                             WidthRequest="10"
-                                             HeightRequest="10"
-                                             Margin="10,10,10,10"></BoxView>
+                                             Style="{StaticResource PrioridadeIcon}"></BoxView>
                                     <Label Text="{Binding Descricao}"
                                            TextColor="{StaticResource ThemeBlue}"
                                            HorizontalOptions="FillAndExpand"
@@ -102,16 +146,16 @@
                        TextColor="{StaticResource ThemeBlue}"
                        HorizontalTextAlignment="End"
                        VerticalOptions="CenterAndExpand"
-                       Grid.Row="5"
+                       Grid.Row="7"
                        Grid.Column="0"></Label>
                 <Editor x:Name="DescricaoTarefa"
                         HorizontalOptions="FillAndExpand"
                         HeightRequest="200"
-                        Grid.Row="5"
+                        Grid.Row="7"
                         Grid.Column="1"></Editor>
 
                 <StackLayout Orientation="Horizontal"
-                             Grid.Row="6"
+                             Grid.Row="8"
                              Grid.Column="0"
                              Grid.ColumnSpan="2"
                              HorizontalOptions="CenterAndExpand">
@@ -121,7 +165,7 @@
                             Style="{StaticResource BtnInfo}"></Button>
 
                     <Button x:Name="BtnCadastrar"
-                            Text="Cadastrar"
+                            Text="Criar"
                             Clicked="BtnCadastrarClicked"
                             Style="{StaticResource BtnSuccess}"></Button>
 

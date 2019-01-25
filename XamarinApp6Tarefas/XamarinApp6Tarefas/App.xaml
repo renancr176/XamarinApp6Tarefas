@@ -30,36 +30,41 @@
             <Setter Property="TextColor" Value="White"></Setter>
             <Setter Property="CornerRadius" Value="5"></Setter>
         </Style>
-        <Style TargetType="Image" x:Key="CheckBoxOn">
+        <Style TargetType="BoxView" x:Key="PrioridadeIcon">
+            <Setter Property="WidthRequest" Value="20"></Setter>
+            <Setter Property="HeightRequest" Value="20"></Setter>
+            <Setter Property="CornerRadius" Value="5"></Setter>
+            <Setter Property="Margin" Value="5,5,5,5"></Setter>
+        </Style>
+        <Style TargetType="ImageButton" x:Key="BaseIconDefaults">
+            <Setter Property="HeightRequest" Value="30"></Setter>
+            <Setter Property="WidthRequest" Value="30"></Setter>
+            <Setter Property="Aspect" Value="AspectFit"></Setter>
+        </Style>
+        <Style TargetType="ImageButton" x:Key="CheckBoxOn" BasedOn="{StaticResource BaseIconDefaults}">
             <Setter Property="Source" Value="check_on.png"></Setter>
             <Setter Property="VerticalOptions" Value="CenterAndExpand"></Setter>
             <Setter Property="HorizontalOptions" Value="Fill"></Setter>
-            <Setter Property="HeightRequest" Value="20"></Setter>
-            <Setter Property="WidthRequest" Value="20"></Setter>
-            <Setter Property="Aspect" Value="AspectFit"></Setter>
+            <Setter Property="BackgroundColor" Value="Transparent"></Setter>
+            <Setter Property="BorderColor" Value="Transparent"></Setter>
         </Style>
-        <Style TargetType="Image" x:Key="CheckBoxOff">
+        <Style TargetType="ImageButton" x:Key="CheckBoxOff" BasedOn="{StaticResource BaseIconDefaults}">
             <Setter Property="Source" Value="check_off.png"></Setter>
             <Setter Property="VerticalOptions" Value="CenterAndExpand"></Setter>
             <Setter Property="HorizontalOptions" Value="Fill"></Setter>
-            <Setter Property="HeightRequest" Value="20"></Setter>
-            <Setter Property="WidthRequest" Value="20"></Setter>
-            <Setter Property="Aspect" Value="AspectFit"></Setter>
+            <Setter Property="BackgroundColor" Value="Transparent"></Setter>
+            <Setter Property="BorderColor" Value="Transparent"></Setter>
         </Style>
-        <Style TargetType="ImageButton" x:Key="BtnEditIcon">
+        <Style TargetType="ImageButton" x:Key="BtnEditIcon" BasedOn="{StaticResource BaseIconDefaults}">
             <Setter Property="Source" Value="edit.png"></Setter>
-            <Setter Property="HeightRequest" Value="20"></Setter>
-            <Setter Property="WidthRequest" Value="20"></Setter>
-            <Setter Property="Aspect" Value="AspectFit"></Setter>
             <Setter Property="BackgroundColor" Value="#ffc107"></Setter>
             <Setter Property="CornerRadius" Value="5"></Setter>
         </Style>
-        <Style TargetType="ImageButton" x:Key="BtnDescricaoIcon">
+        <Style TargetType="ImageButton" x:Key="BtnDescricaoIcon" BasedOn="{StaticResource BaseIconDefaults}">
             <Setter Property="Source" Value="chat.png"></Setter>
-            <Setter Property="HeightRequest" Value="20"></Setter>
-            <Setter Property="WidthRequest" Value="20"></Setter>
-            <Setter Property="Aspect" Value="AspectFit"></Setter>
             <Setter Property="HorizontalOptions" Value="Fill"></Setter>
+            <Setter Property="BackgroundColor" Value="Transparent"></Setter>
+            <Setter Property="BorderColor" Value="Transparent"></Setter>
         </Style>
     </Application.Resources>
 </Application>

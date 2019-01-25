@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace XamarinApp6Tarefas.Enums
 {
-    public class PrioridadeEnum : Enumeration
+    public class PrioridadeEnum : BasePrioridadeEnum
     {
         public static PrioridadeEnum UrgenteImportante = new UrgenteImportanteVal();
         public static PrioridadeEnum UrgenteNaoImportante = new UrgenteNaoImportanteVal();
@@ -25,7 +24,7 @@ namespace XamarinApp6Tarefas.Enums
         private class UrgenteNaoImportanteVal : PrioridadeEnum
         {
             public UrgenteNaoImportanteVal()
-                : base(2, "Urgente mas não importante", Color.OrangeRed)
+                : base(2, "Urgente mas não importante", Color.DarkOrange)
             { }
         }
 
@@ -39,7 +38,7 @@ namespace XamarinApp6Tarefas.Enums
         private class NaoUrgenteNaoImportanteVal : PrioridadeEnum
         {
             public NaoUrgenteNaoImportanteVal()
-                : base(4, "Não urgente e não importante", Color.Blue)
+                : base(4, "Não urgente e não importante", Color.SteelBlue)
             { }
         }
     }

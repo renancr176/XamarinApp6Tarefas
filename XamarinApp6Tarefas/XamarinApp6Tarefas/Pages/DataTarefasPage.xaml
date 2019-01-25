@@ -9,16 +9,15 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout Orientation="Horizontal">
+                            <StackLayout Orientation="Horizontal"
+                                         Margin="0,10,0,10">
                                 <ImageButton Style="{Binding CheckButtonStyle}"
                                              Clicked="BtnCheckTarefaClicked"
                                              CommandParameter="{Binding .}"></ImageButton>
                                 <BoxView BackgroundColor="{Binding Prioridade.Cor}"
+                                         Style="{StaticResource PrioridadeIcon}"
                                          HorizontalOptions="Fill"
-                                         VerticalOptions="CenterAndExpand"
-                                         WidthRequest="10"
-                                         HeightRequest="10"
-                                         Margin="10,10,10,10"></BoxView>
+                                         VerticalOptions="CenterAndExpand"></BoxView>
                                 <Label Text="{Binding StrHorario}"
                                        TextColor="{StaticResource ThemeBlue}"
                                        HorizontalOptions="Fill"

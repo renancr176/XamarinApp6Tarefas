@@ -21,6 +21,15 @@ namespace XamarinApp6Tarefas.Models.Tarefas
             Tarefas = tarefas;  
         }
 
+        public DateTime NotificacaoBaseDateTime(Guid idTarefa)
+        {
+            var notificar = Dia;
+
+            notificar.Add(Tarefas.Find(t => t.Id == idTarefa).Hora);
+
+            return notificar;
+        }
+
         public void AddTarefa(TarefaEntity tarefa)
         {
             Tarefas.Add(tarefa);
