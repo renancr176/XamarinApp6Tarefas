@@ -5,29 +5,25 @@ using System.Reflection;
 
 namespace XamarinApp6Tarefas.Enums
 {
-    public abstract class BaseDiaSemanaEnum : IComparable
+    public abstract class BaseNotificacaoTempoEnum : IComparable
     {
-        public DayOfWeek Id { get; private set; }
+        public int Id { get; private set; }
+        public int Minutos { get; private set; }
         public string Descricao { get; private set; }
-        public string Sigla { get; private set; }
-        public bool Aplicar { get; set; }
-        public bool Ativo { get; set; }
 
-        protected BaseDiaSemanaEnum()
+        protected BaseNotificacaoTempoEnum()
         { }
 
-        protected BaseDiaSemanaEnum(DayOfWeek id, string descricao, string sigla)
+        protected BaseNotificacaoTempoEnum(int id, int minutos, string descricao)
         {
             Id = id;
+            Minutos = minutos;
             Descricao = descricao;
-            Sigla = sigla;
-            Aplicar = true;
-            Ativo = true;
         }
 
         public override string ToString() => Descricao;
 
-        public static IEnumerable<T> GetAll<T>() where T : BaseDiaSemanaEnum
+        public static IEnumerable<T> GetAll<T>() where T : BaseNotificacaoTempoEnum
         {
             var fields = typeof(T).GetFields(BindingFlags.Public |
                                              BindingFlags.Static |
@@ -38,7 +34,7 @@ namespace XamarinApp6Tarefas.Enums
 
         public override bool Equals(object obj)
         {
-            var otherValue = obj as BaseDiaSemanaEnum;
+            var otherValue = obj as BaseNotificacaoTempoEnum;
 
             if (otherValue == null)
                 return false;
@@ -49,6 +45,6 @@ namespace XamarinApp6Tarefas.Enums
             return typeMatches && valueMatches;
         }
 
-        public int CompareTo(object other) => Id.CompareTo(((BaseDiaSemanaEnum)other).Id);
+        public int CompareTo(object other) => Id.CompareTo(((BaseNotificacaoTempoEnum)other).Id);
     }
 }

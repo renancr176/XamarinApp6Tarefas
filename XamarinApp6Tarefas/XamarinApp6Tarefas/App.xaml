@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:system="clr-namespace:System;assembly=netstandard"
              x:Class="XamarinApp6Tarefas.App">
     <Application.Resources>
         <Color x:Key="ThemeBlue">#0D1F2D</Color>
@@ -65,6 +66,16 @@
             <Setter Property="HorizontalOptions" Value="Fill"></Setter>
             <Setter Property="BackgroundColor" Value="Transparent"></Setter>
             <Setter Property="BorderColor" Value="Transparent"></Setter>
+        </Style>
+        <Style TargetType="ListView" x:Key="LwDiaSemana">
+            <Setter Property="HeightRequest">
+                <Setter.Value>
+                    <OnPlatform x:TypeArguments="x:Double">
+                        <On Platform="Android" Value="220"></On>
+                        <On Platform="UWP, iOS" Value="280"></On>
+                    </OnPlatform>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Application.Resources>
 </Application>

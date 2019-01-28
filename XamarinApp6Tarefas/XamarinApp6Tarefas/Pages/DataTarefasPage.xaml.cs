@@ -21,7 +21,7 @@ namespace XamarinApp6Tarefas.Pages
             _dataTarefa = dataTarefa;
             Title = _dataTarefa.Dia.ToString("dd/MM/yy");
             ListaTarefas.ItemsSource = dataTarefa.Tarefas.OrderBy(t => t.Realizado).ThenBy(t => t.Hora).ThenBy(t => t.Prioridade)
-                .Select(t => new TarefaView(t.Id, t.Titulo, t.Prioridade, t.Hora, t.Descricao, t.Realizado, t.IdNotificacao));
+                .Select(t => new TarefaView(t.Id, t.Titulo, t.Prioridade, t.Hora, t.Descricao, t.Realizado, t.NotificacaoTempo, t.IdNotificacao));
         }
 
         private void BtnAlterarTarefaClicked(object sender, EventArgs args)
@@ -43,7 +43,7 @@ namespace XamarinApp6Tarefas.Pages
             var btn = (ImageButton) sender;
             var tarefa = (TarefaEntity) btn.CommandParameter;
             TarefaController.Alterar(_dataTarefa.Id, _dataTarefa.Dia, tarefa.Id, tarefa.Titulo, tarefa.Prioridade, tarefa.Hora,
-                tarefa.Descricao, !tarefa.Realizado);
+                tarefa.Descricao, !tarefa.Realizado, tarefa.NotificacaoTempo);
             RootPage.GoHome(_dataTarefa.Id);
         }
 
@@ -53,8 +53,8 @@ namespace XamarinApp6Tarefas.Pages
             public Style CheckButtonStyle { get; set; }
             public string StrHorario { get; protected set; }
 
-            public TarefaView(Guid id, string titulo, PrioridadeEnum prioridade, TimeSpan hora, string descricao, bool realizado, int idNotificacao)
-                : base(titulo, prioridade, hora, descricao, realizado, idNotificacao)
+            public TarefaView(Guid id, string titulo, PrioridadeEnum prioridade, TimeSpan hora, string descricao, bool realizado, NotificacaoTempoEnum notificacaoTempo, int idNotificacao)
+                : base(titulo, prioridade, hora, descricao, realizado, notificacaoTempo, idNotificacao)
             {
                 Id = id;
                 CheckButtonStyle = (Style) ((Realizado) ? Application.Current.Resources["CheckBoxOn"] : Application.Current.Resources["CheckBoxOff"]);

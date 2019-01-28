@@ -16,6 +16,7 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -35,42 +36,53 @@
                             Grid.Row="0"
                             Grid.Column="1"></DatePicker>
 
-                <Label Text="Definir data final:"
+                <Label Text="*Hora:"
                        TextColor="{StaticResource ThemeBlue}"
                        HorizontalTextAlignment="End"
                        VerticalOptions="CenterAndExpand"
                        Grid.Row="1"
                        Grid.Column="0"></Label>
+                <TimePicker x:Name="HoraTarefa"
+                            HorizontalOptions="StartAndExpand"
+                            Grid.Row="1"
+                            Grid.Column="1"></TimePicker>
+
+                <Label Text="Outras datas:"
+                       TextColor="{StaticResource ThemeBlue}"
+                       HorizontalTextAlignment="End"
+                       VerticalOptions="CenterAndExpand"
+                       Grid.Row="2"
+                       Grid.Column="0"></Label>
                 <Switch IsToggled="False"
                         Toggled="DefiniDataFinal"
-                        Grid.Row="1"
+                        Grid.Row="2"
                         Grid.Column="1"></Switch>
 
                 <Label Text="*Dia Final:"
                        TextColor="{StaticResource ThemeBlue}"
                        HorizontalTextAlignment="End"
                        VerticalOptions="CenterAndExpand"
-                       Grid.Row="2"
+                       Grid.Row="3"
                        Grid.Column="0"></Label>
                 <DatePicker x:Name="DataFinalTarefa"
                             DateSelected="DataTarefaFinalSelected"
                             HorizontalOptions="StartAndExpand"
-                            Grid.Row="2"
+                            Grid.Row="3"
                             Grid.Column="1"></DatePicker>
 
                 <Label Text="*Dia da semana:"
                        TextColor="{StaticResource ThemeBlue}"
                        HorizontalTextAlignment="End"
                        VerticalOptions="CenterAndExpand"
-                       Grid.Row="3"
+                       Grid.Row="4"
                        Grid.Column="0"></Label>
                 <ListView x:Name="ListaDiaSemana"
                           HasUnevenRows="True"
                           HorizontalOptions="FillAndExpand"
                           VerticalOptions="Fill"
-                          Grid.Row="3"
+                          Grid.Row="4"
                           Grid.Column="1"
-                          HeightRequest="280">
+                          Style="{StaticResource LwDiaSemana}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
@@ -80,26 +92,13 @@
                                            HorizontalOptions="FillAndExpand"
                                            VerticalOptions="CenterAndExpand"
                                            HorizontalTextAlignment="End"></Label>
-                                    <Switch IsToggled="True" 
-                                            IsEnabled="{Binding Ativo}"
-                                            BindingContext="{Binding .}"
-                                            Toggled="DiaSemanaTogled"></Switch>
+                                    <Switch IsToggled="{Binding Aplicar}" 
+                                            IsEnabled="{Binding Ativo}"></Switch>
                                 </StackLayout>
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-
-                <Label Text="*Hora:"
-                       TextColor="{StaticResource ThemeBlue}"
-                       HorizontalTextAlignment="End"
-                       VerticalOptions="CenterAndExpand"
-                       Grid.Row="4"
-                       Grid.Column="0"></Label>
-                <TimePicker x:Name="HoraTarefa"
-                            HorizontalOptions="StartAndExpand"
-                            Grid.Row="4"
-                            Grid.Column="1"></TimePicker>
 
                 <Label Text="*Título:"
                        TextColor="{StaticResource ThemeBlue}"
@@ -142,20 +141,31 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <Label Text="Descrição:"
+                <Label Text="*Notificar:"
                        TextColor="{StaticResource ThemeBlue}"
                        HorizontalTextAlignment="End"
                        VerticalOptions="CenterAndExpand"
                        Grid.Row="7"
                        Grid.Column="0"></Label>
+                <Picker x:Name="NotificacaoTempo"
+                        HorizontalOptions="FillAndExpand"
+                        Grid.Row="7"
+                        Grid.Column="1"></Picker>
+
+                <Label Text="Descrição:"
+                       TextColor="{StaticResource ThemeBlue}"
+                       HorizontalTextAlignment="End"
+                       VerticalOptions="CenterAndExpand"
+                       Grid.Row="8"
+                       Grid.Column="0"></Label>
                 <Editor x:Name="DescricaoTarefa"
                         HorizontalOptions="FillAndExpand"
                         HeightRequest="200"
-                        Grid.Row="7"
+                        Grid.Row="8"
                         Grid.Column="1"></Editor>
 
                 <StackLayout Orientation="Horizontal"
-                             Grid.Row="8"
+                             Grid.Row="9"
                              Grid.Column="0"
                              Grid.ColumnSpan="2"
                              HorizontalOptions="CenterAndExpand">
@@ -172,7 +182,26 @@
                     <Button x:Name="BtnAlterar"
                             Text="Alterar"
                             Clicked="BtnAlterarClicked"
-                            Style="{StaticResource BtnWarning}"></Button>
+                            Style="{StaticResource BtnWarning}"
+                            IsVisible="False"></Button>
+
+                    <Button x:Name="BtnExcluir"
+                            Text="Excluir"
+                            Clicked="BtnExcluirClicked"
+                            Style="{StaticResource BtnDanger}"
+                            IsVisible="False"></Button>
+
+                    <StackLayout x:Name="ExcluirSwitch"
+                                 Orientation="Horizontal"
+                                 Margin="10,0,10,0"
+                                 IsVisible="False">
+                        <Label Text="Excluir"
+                               VerticalOptions="CenterAndExpand"
+                               VerticalTextAlignment="Center"
+                               TextColor="{StaticResource ThemeBlue}"></Label>
+                        <Switch IsToggled="false"
+                                Toggled="SwExcluirToggled"></Switch>
+                    </StackLayout>
                 </StackLayout>
             </Grid>
         </ScrollView>

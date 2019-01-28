@@ -1,5 +1,4 @@
 ﻿using System;
-using Newtonsoft.Json;
 using XamarinApp6Tarefas.Enums;
 
 namespace XamarinApp6Tarefas.Models.Tarefas
@@ -12,13 +11,14 @@ namespace XamarinApp6Tarefas.Models.Tarefas
         public TimeSpan Hora { get; protected set; }
         public string Descricao { get; protected set; }
         public bool Realizado { get; protected set; }
+        public NotificacaoTempoEnum NotificacaoTempo { get; protected set; }
         public int IdNotificacao { get; protected set; }
 
         protected TarefaEntity()
         {
         }
 
-        public TarefaEntity(string titulo, PrioridadeEnum prioridade, TimeSpan hora, string descricao, bool realizado, int idNotificacao)
+        public TarefaEntity(string titulo, PrioridadeEnum prioridade, TimeSpan hora, string descricao, bool realizado, NotificacaoTempoEnum notificacaoTempo, int idNotificacao)
         {
             Id = Guid.NewGuid();
             Titulo = titulo;
@@ -26,6 +26,7 @@ namespace XamarinApp6Tarefas.Models.Tarefas
             Hora = hora;
             Descricao = descricao;
             Realizado = realizado;
+            NotificacaoTempo = notificacaoTempo;
             IdNotificacao = idNotificacao;
         }
 
@@ -41,7 +42,7 @@ namespace XamarinApp6Tarefas.Models.Tarefas
 
         public static class TarefaFactory
         {
-            public static TarefaEntity NewTarefa(Guid id, string titulo, PrioridadeEnum prioridade, TimeSpan hora, string descricao, bool realizado)
+            public static TarefaEntity NewTarefa(Guid id, string titulo, PrioridadeEnum prioridade, TimeSpan hora, string descricao, bool realizado, NotificacaoTempoEnum notificacaoTempo, int idNotificacao)
             {
                 var tarefa = new TarefaEntity()
                 {
@@ -50,8 +51,10 @@ namespace XamarinApp6Tarefas.Models.Tarefas
                     Prioridade = prioridade,
                     Hora = hora,
                     Descricao = descricao,
-                    Realizado = realizado
-                };
+                    Realizado = realizado,
+                    NotificacaoTempo = notificacaoTempo,
+                    IdNotificacao = idNotificacao
+            };
 
                 return tarefa;
             }
