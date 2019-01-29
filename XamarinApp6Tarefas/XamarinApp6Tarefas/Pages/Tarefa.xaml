@@ -43,6 +43,8 @@
                        Grid.Row="1"
                        Grid.Column="0"></Label>
                 <TimePicker x:Name="HoraTarefa"
+                            Format="HH:mm"
+                            Unfocused="HoraTarefaChanged"
                             HorizontalOptions="StartAndExpand"
                             Grid.Row="1"
                             Grid.Column="1"></TimePicker>

@@ -7,6 +7,7 @@ using Xamarin.Forms.Xaml;
 using XamarinApp6Tarefas.Controller;
 using XamarinApp6Tarefas.Enums;
 using XamarinApp6Tarefas.Models.Tarefas;
+using XamarinApp6Tarefas.Shared;
 
 namespace XamarinApp6Tarefas.Pages
 {
@@ -32,13 +33,11 @@ namespace XamarinApp6Tarefas.Pages
             _diasSemana = new ObservableCollection<DiaSemanaEnum>(DiaSemanaEnum.GetAll<DiaSemanaEnum>().ToList());
 
             ListaPrioridades.ItemsSource = prioridades;
-            NotificacaoTempo.ItemsSource = NotificacaoTempoEnum.GetAll<NotificacaoTempoEnum>().ToList();
-            NotificacaoTempo.SelectedIndex = 0;
+            
             _definirDiaFinal = false;
             DataTarefa.MinimumDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             DataFinalTarefa.Date = (DataTarefa.Date).AddDays(1);
             DataFinalTarefa.MinimumDate = (DataTarefa.Date).AddDays(1);
-            //ControleListaDiaSemanaSwitch(DataTarefa.Date, DataFinalTarefa.Date);
 
             if (_idTarefa.HasValue 
             && TarefaController.DataTarefas.Any(dt => dt.Tarefas.Any(t => t.Id == _idTarefa)))
@@ -46,26 +45,37 @@ namespace XamarinApp6Tarefas.Pages
                 MainGrid.Children[4].IsVisible = false;
                 MainGrid.Children[5].IsVisible = false;
                 _dataTarefa = TarefaController.DataTarefas.Where(dt => dt.Tarefas.Any(t => t.Id == _idTarefa)).FirstOrDefault();
+                var tarefa = _dataTarefa.Tarefas.Find(tf => tf.Id == _idTarefa);
                 Title = "Alterar Tarefa";
                 DataTarefa.Date = _dataTarefa.Dia;
                 DataTarefa.MinimumDate = _dataTarefa.Dia;
-                HoraTarefa.Time = _dataTarefa.Tarefas.Find(tf => tf.Id == _idTarefa).Hora;
-                TituloTarefa.Text = _dataTarefa.Tarefas.Find(tf => tf.Id == _idTarefa).Titulo;
-                ListaPrioridades.SelectedItem = _dataTarefa.Tarefas.Find(tf => tf.Id == _idTarefa).Prioridade;
-                _prioridade = _dataTarefa.Tarefas.Find(tf => tf.Id == _idTarefa).Prioridade;
-                NotificacaoTempo.SelectedItem = _dataTarefa.Tarefas.Find(tf => tf.Id == _idTarefa).NotificacaoTempo;
-                DescricaoTarefa.Text = _dataTarefa.Tarefas.Find(tf => tf.Id == _idTarefa).Descricao;
+                HoraTarefa.Time = tarefa.Hora;
+                TituloTarefa.Text = tarefa.Titulo;
+                ListaPrioridades.SelectedItem = tarefa.Prioridade;
+                _prioridade = tarefa.Prioridade;
+                NotificacaoTempoOpcoes(_dataTarefa.Dia.Add(tarefa.Hora), tarefa.NotificacaoTempo);
+                DescricaoTarefa.Text = tarefa.Descricao;
                 BtnCadastrar.IsVisible = false;
                 BtnAlterar.IsVisible = true;
                 ExcluirSwitch.IsVisible = true;
             }
-
+            else
+            {
+                HoraTarefa.Time = DateTime.Now.AddMinutes(5).ToTimeSpan();
+                NotificacaoTempoOpcoes(DataTarefa.Date.Add(HoraTarefa.Time));
+            }
 
             ControleDefinirDiaFinal();
         }
 
         #region Events Handlers
-        
+
+        private void HoraTarefaChanged(object sender, EventArgs e)
+        {
+            var timePicker = (TimePicker) sender;
+            NotificacaoTempoOpcoes(DataTarefa.Date.Add(timePicker.Time));
+        }
+
         private void DataTarefaSelected(object sender, DateChangedEventArgs args)
         {
             if (DataFinalTarefa.Date <= args.NewDate)
@@ -78,6 +88,8 @@ namespace XamarinApp6Tarefas.Pages
             }
 
             DataFinalTarefa.MinimumDate = (args.NewDate).AddDays(1);
+
+            NotificacaoTempoOpcoes(args.NewDate.Add(HoraTarefa.Time));
         }
 
         private void ListaPrioridadesItemSelected(object sender, SelectedItemChangedEventArgs args)
@@ -221,6 +233,28 @@ namespace XamarinApp6Tarefas.Pages
             ListaDiaSemana.ItemsSource = _diasSemana;
         }
 
+        private void NotificacaoTempoOpcoes(DateTime diaHora, NotificacaoTempoEnum itemSelecionado = null)
+        {
+            var opcoes = NotificacaoTempoEnum.GetAll<NotificacaoTempoEnum>()
+                .ToList()
+                .Where(nte =>
+                    nte.Minutos == 0
+                    || nte.Minutos > DateTime.Now.Subtract(diaHora).TotalMinutes
+                )
+                .ToList();
+
+            NotificacaoTempo.ItemsSource = opcoes;
+
+            if (itemSelecionado != null && opcoes.Exists(op => op.Equals(itemSelecionado)))
+            {
+                NotificacaoTempo.SelectedIndex = opcoes.IndexOf(opcoes.Find(op => op.Equals(itemSelecionado)));
+            }
+            else if (NotificacaoTempo.SelectedItem == null)
+            {
+                NotificacaoTempo.SelectedIndex = 0;
+            }
+        }
+
         #endregion
 
         #region Validations
@@ -314,5 +348,7 @@ namespace XamarinApp6Tarefas.Pages
         }
 
         #endregion
+
+        
     }
 }

@@ -45,16 +45,20 @@ namespace XamarinApp6Tarefas.Controller
                 App.Current.Properties.Remove("Tarefas");
             }
 
-            var tarefasJson = JsonConvert.SerializeObject(DataTarefas);
+            if (App.Current.Properties.ContainsKey("TarefasIdNotification"))
+            {
+                App.Current.Properties.Remove("TarefasIdNotification");
+            }
 
-            App.Current.Properties.Add("Tarefas", tarefasJson);
+            App.Current.Properties.Add("Tarefas", JsonConvert.SerializeObject(DataTarefas));
+            App.Current.Properties.Add("TarefasIdNotification", JsonConvert.SerializeObject(LastIdNotification));
         }
 
         public static bool Cadastrar(DateTime dia, DateTime? diaFinal, List<DiaSemanaEnum> diasSemanas, string titulo, PrioridadeEnum prioridade, TimeSpan hora, string descricao, NotificacaoTempoEnum notificacaoTempo)
         {
             try
             {
-                
+                hora = new TimeSpan(hora.Days, hora.Hours, hora.Minutes, 0);
                 var tarefa = new TarefaEntity(titulo, prioridade, hora, descricao, false, notificacaoTempo, NextIdNotification());
 
                 if (DataTarefas.Any(df => df.Dia == dia))
@@ -68,7 +72,12 @@ namespace XamarinApp6Tarefas.Controller
                     DataTarefas.Add(dataTarefa);
                 }
 
-                CrossLocalNotifications.Current.Show(titulo, descricao, tarefa.IdNotificacao, DataTarefas.Find(df => df.Dia == dia).NotificacaoBaseDateTime(tarefa.Id).AddMinutes(-10));
+                var dataHoraNotificacao = DataTarefas.Find(df => df.Dia == dia).NotificacaoBaseDateTime(tarefa.Id);
+                if (tarefa.NotificacaoTempo.Minutos != 0)
+                {
+                    dataHoraNotificacao = dataHoraNotificacao.AddMinutes(tarefa.NotificacaoTempo.Minutos);
+                }
+                CrossLocalNotifications.Current.Show(titulo, descricao, tarefa.IdNotificacao, dataHoraNotificacao);
 
                 if(diaFinal.HasValue 
                 && diasSemanas != null
@@ -97,6 +106,7 @@ namespace XamarinApp6Tarefas.Controller
         {
             try
             {
+                hora = new TimeSpan(hora.Days, hora.Hours, hora.Minutes, 0);
                 var idNotificacao = DataTarefas.Find(dt => dt.Tarefas.Exists(t => t.Id == idTarefa)).Tarefas
                     .Find(t => t.Id == idTarefa).IdNotificacao;
                 var tarefa = TarefaEntity.TarefaFactory.NewTarefa(idTarefa, titulo, prioridade, hora, descricao, realizado, notificacaoTempo, idNotificacao);
@@ -127,7 +137,13 @@ namespace XamarinApp6Tarefas.Controller
                 }
 
                 CrossLocalNotifications.Current.Cancel(tarefa.IdNotificacao);
-                CrossLocalNotifications.Current.Show(titulo, descricao, tarefa.IdNotificacao, DataTarefas.Find(df => df.Dia == dia).NotificacaoBaseDateTime(tarefa.Id).AddMinutes(notificacaoTempo.Minutos));
+
+                var dataHoraNotificacao = DataTarefas.Find(df => df.Dia == dia).NotificacaoBaseDateTime(tarefa.Id);
+                if (tarefa.NotificacaoTempo.Minutos != 0)
+                {
+                    dataHoraNotificacao = dataHoraNotificacao.AddMinutes(tarefa.NotificacaoTempo.Minutos);
+                }
+                CrossLocalNotifications.Current.Show(titulo, descricao, tarefa.IdNotificacao, dataHoraNotificacao);
             }
             catch (Exception e)
             {
