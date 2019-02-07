@@ -138,12 +138,15 @@ namespace XamarinApp6Tarefas.Controller
 
                 CrossLocalNotifications.Current.Cancel(tarefa.IdNotificacao);
 
-                var dataHoraNotificacao = DataTarefas.Find(df => df.Dia == dia).NotificacaoBaseDateTime(tarefa.Id);
-                if (tarefa.NotificacaoTempo.Minutos != 0)
+                if (!tarefa.Realizado)
                 {
-                    dataHoraNotificacao = dataHoraNotificacao.AddMinutes(tarefa.NotificacaoTempo.Minutos);
+                    var dataHoraNotificacao = DataTarefas.Find(df => df.Dia == dia).NotificacaoBaseDateTime(tarefa.Id);
+                    if (tarefa.NotificacaoTempo.Minutos != 0)
+                    {
+                        dataHoraNotificacao = dataHoraNotificacao.AddMinutes(tarefa.NotificacaoTempo.Minutos);
+                    }
+                    CrossLocalNotifications.Current.Show(titulo, descricao, tarefa.IdNotificacao, dataHoraNotificacao);
                 }
-                CrossLocalNotifications.Current.Show(titulo, descricao, tarefa.IdNotificacao, dataHoraNotificacao);
             }
             catch (Exception e)
             {
